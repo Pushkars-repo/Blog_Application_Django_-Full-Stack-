@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+</head>
+<body class="font-['Poppins']">
+    <div class="h-screen w-full bg-cover bg-[url('./bg.png')]">
+        <div class="flex justify-center items-center h-screen">
+            <form method="post" enctype="multipart/form-data" class="bg-[#65C0C4] bg-opacity-40 shadow-[0_35px_60px_-15px_rgba(0,0,0,0.8)] rounded-md flex items-center p-4 px-4 pt-2 justify-between flex-col w-[400px] h-[500px]">
+                {% csrf_token %}
+                <h1 class="text-4xl text-[#E98B34] border-b-4 border-[#E98B34] font-bold py-2 text-center">Create Blog</h1>
+                <div class="flex justify-between items-center gap-2 flex-col">
+                    <div>
+                        <input class="py-3 rounded-md px-2 w-80" type="text" id="title" name="title" placeholder="Your blog title here" required>
+                    </div>
+    
+                    <div>
+                        <select name="category" class="py-1 focus:outline-none text-md font-normal rounded-lg" required>
+                            <option selected disabled>Select Topic</option>
+                            {% for category in categories %}
+                            <option value="{{category.name}}">{{category.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+    
+                        <textarea class="px-2 py-2 rounded-lg resize-none" id="content" name="content" cols="42" rows="10" placeholder="Write your blog..." required></textarea>
+                        <!-- <input type="text" name="author"> -->
+    
+                    <div class="flex items-center">
+                       <div>
+                        <input type="file" name="uploadimg" id="img" accept="image/x-png,image/gif,image/jpeg" class="text-sm text-grey-500
+                        file:mr-2 file:py-2 file:px-6
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-medium
+                        hover:file:cursor-pointer" placeholder="Upload Image" required/>
+                        <!-- <label for="img" class="px-3 rounded-lg bg-[#65C0C4] text-[#100F33] font-semibold py-2 text-lg rounded-md"><i class="ri-image-add-fill"></i></label> -->
+                       </div>
+    
+                       
+    
+                       
+                        <div>   
+                        <button type="submit" class="bg-[#E98B34] text-white font-semibold tracking-wide px-5 py-2 rounded-md text-lg">Post</button>
+                        </div>
+                    </div>
+                </div>
+                
+            </form>
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{error}}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</body>
+</html>
