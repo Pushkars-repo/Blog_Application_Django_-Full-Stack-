@@ -64,7 +64,7 @@
                 
                 <div class="relative -z-10"><a href="{% url 'read_blog' blog.id %}">
                         <img class=" w-full h-60 bg-white md:h-48"
-                            src="{{blog.image}}"
+                            src="{{blog.image.url}}"
                             alt="Sunset in the mountains">
                         <!-- <div
                             class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25">
@@ -135,20 +135,24 @@
     </div>
 
     <div class="m-10">
-        <span class="space-x-3">
+        {{search_result}}
+        <span class="space-x-3 flex justify-between">
             {% if page_obj.has_previous %}
                 {% if categoryID == None %}
-                    <a href="?page={{page_obj.previous_page_number}}" class="bg-orange-500 rounded-xl px-2 py-2 text-white">Previous</a>
+
+                <!-- #edited this check this today!!!!! -->
+
+                    <a href="{% if search_result %}?page={{page_obj.previous_page_number}}&search={{search_result}}{% else %}?page={{page_obj.previous_page_number}}{% endif %}" class="bg-orange-500 rounded px-2 py-2 text-white">&larr;Previous</a>
                 {% else %}
-                    <a href="?page={{page_obj.previous_page_number}}&category={{categoryID}}" class="bg-orange-500 rounded-xl px-2 py-2 text-white">Previous</a>
+                    <a href="{% if search_result %}?page={{page_obj.previous_page_number}}&category={{categoryID}}&search={{search_result}}{% else %}?page={{page_obj.previous_page_number}}&category={{categoryID}}{% endif %}"" class="bg-orange-500 rounded-xl px-2 py-2 text-white">&larr;Previous</a>
                 {% endif %}
             {% endif %}
 
             {% if page_obj.has_next %}
                 {% if categoryID == None %}
-                    <a href="?page={{page_obj.next_page_number}}" class="bg-orange-500 rounded-xl px-3 py-2 text-white">Next</a>
+                    <a href="{% if search_result %}?page={{page_obj.next_page_number}}&search={{search_result}}{% else %}?page={{page_obj.next_page_number}}{% endif %}" class="bg-orange-500 rounded px-3 py-2 text-white">Next&rarr;</a>
                 {% else %}
-                    <a href="?page={{page_obj.next_page_number}}&category={{categoryID}}" class="bg-orange-500 rounded-xl px-3 py-2 text-white">Next</a>
+                    <a href="{% if search_result %}?page={{page_obj.next_page_number}}&category={{categoryID}}&search={{search_result}}{% else %}?page={{page_obj.next_page_number}}&category={{categoryID}}{% endif %}" class="bg-orange-500 rounded-xl px-3 py-2 text-white">Next&rarr;</a>
                 {% endif %}
             {% endif %}
         </span>

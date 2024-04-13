@@ -35,7 +35,7 @@ def home(request):
     # red = Blog._meta.get_fields()
     # print(red)
     # all_post = Post.objects.all().
-    paginator = Paginator(blogs, 5, orphans=1)
+    paginator = Paginator(blogs, 2, orphans=1)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
    
@@ -199,19 +199,72 @@ def search(request):
     if request.method == "GET":
         search_result = request.GET['search']
         
-        blogs = Blog.objects.all()
-        if Q:
-            blogs = blogs.filter(Q(title__icontains = search_result) | Q(content__icontains = search_result) | Q(authors__username__icontains = search_result) | Q(category__name__icontains = search_result))
+        # blogs = Blog.objects.all()
+        # if Q:
+        #     blogs = blogs.filter(Q(title__icontains = search_result) | Q(content__icontains = search_result) | Q(authors__username__icontains = search_result) | Q(category__name__icontains = search_result))
+        blogs = Blog.objects.all().order_by('id')
+
+#     paginator = Paginator(blogs, 2, orphans=1)
+        paginator = Paginator(blogs, 2)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        #  print(categoryID)
+        if search_result:
+            # blogs = Blog.objects.filter(category=categoryID)
+            blogs = Blog.objects.filter(title__icontains=search_result).order_by('id')
+
+            paginator = Paginator(blogs, 1)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
         context = {
         'blogs' : blogs,
+        'page_obj':page_obj,
+        'search_result':search_result
         }
         return render(request, 'blog.html',context)
     elif request.method=='POST':
         return render(request,'blog.html')  
     else:
         return HttpResponse("An error occured!")
+
+
+        
+        
+#  blogs = Blog.objects.all().order_by('id')
+
+#     paginator = Paginator(blogs, 2, orphans=1)
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+   
+#     categories = Category.objects.all()
+#     print(request.GET)
+#     categoryID = request.GET.get('category')
+#     print(categoryID)
+#     if categoryID:
+#         # blogs = Blog.objects.filter(category=categoryID)
+#         blogs = Blog.objects.filter(category=categoryID).order_by('id')
+
+#         paginator = Paginator(blogs, 1)
+#         page_number = request.GET.get('page')
+#         page_obj = paginator.get_page(page_number)
+#     else:
+#         # blogs = Blog.objects.all()
+#         page_obj = paginator.get_page(page_number)
+
+#         #filter and pagintion dont work 
         
 
+
+    # context = {
+    #     # 'users':users,
+    #     'blogs':blogs,
+    #     'categories':categories,
+    #     'page_obj':page_obj,
+    #     'categoryID':categoryID
+    # }
+    # # print(context)
+    # return render(request,'blog.html',context)
 
 
 
